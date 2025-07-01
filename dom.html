@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Interaktif</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --dark-color: #1b263b;
+            --light-color: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            transition: all 0.5s ease;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        .counter {
+            font-size: 3rem;
+            text-align: center;
+            margin: 1rem 0;
+            color: var(--primary-color);
+        }
+        
+        .color-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .color-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 3px solid white;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .todo-list {
+            margin-top: 1rem;
+        }
+        
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f1f3f5;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .todo-item button {
+            background-color: #e63946;
+            padding: 0.5rem 1rem;
+        }
+        
+        .todo-item button:hover {
+            background-color: #c1121f;
+        }
+        
+        #todo-input {
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 70%;
+            font-size: 1rem;
+            margin-right: 1rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Website Interaktif</h1>
+        <p>Demo berbagai efek dan animasi dengan DOM</p>
+    </header>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Penghitung Interaktif</h2>
+            <div class="counter" id="counter">0</div>
+            <div>
+                <button id="increment">Tambah</button>
+                <button id="decrement">Kurangi</button>
+                <button id="reset">Reset</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Pengubah Tema Warna</h2>
+            <div class="color-picker">
+                <div class="color-option" style="background-color: #4361ee;" data-color="primary"></div>
+                <div class="color-option" style="background-color: #7209b7;" data-color="secondary"></div>
+                <div class="color-option" style="background-color: #f72585;" data-color="accent"></div>
+                <div class="color-option" style="background-color: #4cc9f0;" data-color="light"></div>
+                <div class="color-option" style="background-color: #1b263b;" data-color="dark"></div>
+            </div>
+            <button id="reset-theme">Reset Tema</button>
+        </div>
+        
+        <div class="card">
+            <h2>Manajemen Tugas</h2>
+            <div>
+                <input type="text" id="todo-input" placeholder="Masukkan tugas baru...">
+                <button id="add-todo">Tambah</button>
+            </div>
+            <div class="todo-list" id="todo-list"></div>
+        </div>
+        
+        <div class="card">
+            <h2> Popup Rahasia</h2>
+            <button id="open-modal">Buka Popup</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2>Ini Popup Rahasia</h2>
+            <p>Hai selamat telah membuka popup rahasia ini yang isinya kosong</p>
+            <button id="close-modal">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        // Penghitung
+        const counter = document.getElementById('counter');
+        const incrementBtn = document.getElementById('increment');
+        const decrementBtn = document.getElementById('decrement');
+        const resetBtn = document.getElementById('reset');
+        
+        let count = 0;
+        
+        incrementBtn.addEventListener('click', () => {
+            count++;
+            counter.textContent = count;
+            counter.style.color = count > 0 ? '#2a9d8f' : count < 0 ? '#e63946' : '#4361ee';
+            animateCounter();
+        });
+        
+        decrementBtn.addEventListener('click', () => {
+            count--;
+            counter.textContent = count;
+            counter.style.color = count > 0 ? '#2a9d8f' : count < 0 ? '#e63946' : '#4361ee';
+            animateCounter();
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            count = 0;
+            counter.textContent = count;
+            counter.style.color = '#4361ee';
+            animateCounter();
+        });
+        
+        function animateCounter() {
+            counter.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                counter.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // Pengubah tema warna
+        const colorOptions = document.querySelectorAll('.color-option');
+        const resetThemeBtn = document.getElementById('reset-theme');
+        
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const colorType = option.getAttribute('data-color');
+                const color = window.getComputedStyle(option).backgroundColor;
+                
+                document.documentElement.style.setProperty(--$, {colorType}-color, color);
+                
+                // Animasi saat memilih warna
+                option.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    option.style.transform = 'scale(1.1)';
+                }, 100);
+            });
+        });
+        
+        resetThemeBtn.addEventListener('click', () => {
+            document.documentElement.style.removeProperty('--primary-color');
+            document.documentElement.style.removeProperty('--secondary-color');
+            document.documentElement.style.removeProperty('--accent-color');
+            document.documentElement.style.removeProperty('--dark-color');
+            document.documentElement.style.removeProperty('--light-color');
+        });
+        
+        // Manajemen tugas
+        const todoInput = document.getElementById('todo-input');
+        const addTodoBtn = document.getElementById('add-todo');
+        const todoList = document.getElementById('todo-list');
+        
+        addTodoBtn.addEventListener('click', addTodo);
+        todoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTodo();
+        });
+        
+        function addTodo() {
+            const todoText = todoInput.value.trim();
+            if (todoText === '') return;
+            
+            const todoItem = document.createElement('div');
+            todoItem.className = 'todo-item';
+            
+            const todoTextSpan = document.createElement('span');
+            todoTextSpan.textContent = todoText;
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Hapus';
+            deleteBtn.addEventListener('click', () => {
+                todoItem.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => {
+                    todoItem.remove();
+                }, 300);
+            });
+            
+            todoItem.appendChild(todoTextSpan);
+            todoItem.appendChild(deleteBtn);
+            todoList.appendChild(todoItem);
+            
+            todoInput.value = '';
+        }
+        
+        // Modal popup
+        const modal = document.getElementById('modal');
+        const openModalBtn = document.getElementById('open-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        
+        openModalBtn.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+        
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+        
+        // Tutup modal saat klik di luar konten modal
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
